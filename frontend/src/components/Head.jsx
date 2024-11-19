@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/UsersApiSlice";
 import { logout } from "../slices/authSlice.js";
+import { toast } from "react-toastify";
 
 export default function Head() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -24,6 +25,7 @@ export default function Head() {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
+      toast.success("Logout Successfull");
       navigate("/");
     } catch (err) {
       console.log(err);

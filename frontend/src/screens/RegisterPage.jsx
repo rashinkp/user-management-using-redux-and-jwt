@@ -33,6 +33,7 @@ const RegisterPage = () => {
       try {
         const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
+        toast.success("Registration Successfull");
         navigate("/");
       } catch (err) {
         toast.error(err?.data?.message || err.error);

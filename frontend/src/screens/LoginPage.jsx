@@ -26,6 +26,7 @@ const LoginPage = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
+      toast.success('Login Successfull')
       navigate("/");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
@@ -38,7 +39,7 @@ const LoginPage = () => {
       ) : (
         <form className="max-w-lg rounded-lg mx-auto bg-gray-900 p-10">
           <div className="text-center">
-            <h1 className="font-bold text-2xl m-5">Sign Up</h1>
+            <h1 className="font-bold text-2xl m-5">Sign In</h1>
           </div>
           <div className="mb-5">
             <label
