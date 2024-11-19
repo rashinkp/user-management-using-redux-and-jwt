@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Spinner from "../components/Spinner.jsx";
-import { setCredentials } from "../slices/authSlice.js";
-import { useRegisterMutation } from "../slices/UsersApiSlice.js";
+import Spinner from "../../components/Spinner.jsx";
+import { setCredentials } from "../../slices/authSlice.js";
+import { useRegisterMutation } from "../../slices/UsersApiSlice.js";
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
@@ -21,20 +21,20 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/user");
     }
   }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent form submission from reloading the page
     if (password !== confirmPassword) {
-      toast.error("Password do not match");
+      toast.error("Passwords do not match");
     } else {
       try {
         const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
-        toast.success("Registration Successfull");
-        navigate("/");
+        toast.success("Registration Successful");
+        navigate("/user");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
@@ -46,10 +46,14 @@ const RegisterPage = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <form className="max-w-lg rounded-lg mx-auto bg-gray-900 p-10">
+        <form
+          className="max-w-lg rounded-lg mx-auto bg-gray-900 p-10"
+          onSubmit={submitHandler} // Use onSubmit instead of onClick
+        >
           <div className="text-center">
             <h1 className="font-bold text-2xl m-5">Sign Up</h1>
           </div>
+
           {/* Name Input */}
           <div className="mb-5">
             <label
@@ -129,8 +133,7 @@ const RegisterPage = () => {
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
-              type="submit"
-              onClick={submitHandler}
+              type="submit" // The form will now submit using the form's onSubmit
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Sign Up
@@ -139,7 +142,7 @@ const RegisterPage = () => {
 
           {/* Link to Login */}
           <div className="mt-3 underline text-blue-200 text-center">
-            <Link to="/login">Already have an account? Login here</Link>
+            <Link to="/user/login">Already have an account? Login here</Link>
           </div>
         </form>
       )}

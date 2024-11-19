@@ -10,11 +10,11 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../slices/UsersApiSlice";
-import { logout } from "../slices/authSlice.js";
+import { useLogoutMutation } from "../../slices/UsersApiSlice.js";
+import { logout } from "../../slices/authSlice.js";
 import { toast } from "react-toastify";
 
-export default function Head() {
+export default function UserHead() {
   const { userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export default function Head() {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <Link to="/" className="text-white text-xl font-bold ">
+              <Link to="/user" className="text-white text-xl font-bold ">
                 User
               </Link>
             </div>
@@ -71,7 +71,7 @@ export default function Head() {
               </>
             ) : (
               <>
-                <Link to="/register">
+                <Link to="/user/register">
                   <button
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -79,7 +79,7 @@ export default function Head() {
                     Sign Up
                   </button>
                 </Link>
-                <Link to="/login">
+                <Link to="/user/login">
                   <button
                     type="button"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"

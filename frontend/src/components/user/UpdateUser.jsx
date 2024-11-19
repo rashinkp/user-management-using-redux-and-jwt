@@ -1,10 +1,10 @@
-import { useUpdateUserMutation } from "../slices/UsersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { useUpdateUserMutation } from "../../slices/usersApiSlice";
+import { setCredentials } from "../../slices/authSlice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 const UpdateUser = ({ toggle }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
@@ -13,7 +13,6 @@ const UpdateUser = ({ toggle }) => {
 
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const submitUpdateHandler = async (e) => {
@@ -27,7 +26,7 @@ const UpdateUser = ({ toggle }) => {
       }).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success("Profile Updated");
-      toggle(false)
+      toggle(false);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

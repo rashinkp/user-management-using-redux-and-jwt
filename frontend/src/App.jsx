@@ -1,17 +1,16 @@
-import React from "react";
-import Head from "./components/Head";
-import { Outlet } from "react-router-dom";
-import { Container } from "postcss";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-const App = () => {
+import { RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store/store.js";
+import router from "./router.jsx";
+
+function App() {
   return (
     <>
-      <Head />
-      <ToastContainer />
-      <Outlet />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </>
   );
-};
+}
 
 export default App;

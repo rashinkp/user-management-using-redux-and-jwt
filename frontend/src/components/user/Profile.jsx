@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../slices/UsersApiSlice";
-import { logout } from "../slices/authSlice";
+import { useLogoutMutation } from "../../slices/usersApiSlice.js";
+import { logout } from "../../slices/authSlice.js";
 import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser.jsx";
 import { toast } from "react-toastify";
@@ -18,7 +18,7 @@ const Profile = () => {
       await logoutApiCall().unwrap();
       dispatch(logout());
       toast.success("Logout Successfull");
-      navigate("/");
+      navigate("/user");
     } catch (err) {
       console.log(err);
     }
