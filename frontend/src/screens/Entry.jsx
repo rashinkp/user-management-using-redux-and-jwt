@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 const Entry = () => {
   return (
@@ -7,7 +7,7 @@ const Entry = () => {
       <div className="space-x-4">
         {/* Link for User */}
         <Link
-          to="/user" 
+          to="/user"
           className="px-6 py-3 text-xl font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none"
         >
           User
@@ -15,7 +15,7 @@ const Entry = () => {
 
         {/* Link for Admin */}
         <Link
-          to="/admin/dashboard" 
+          to="/admin"
           className="px-6 py-3 text-xl font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 focus:outline-none"
         >
           Admin
