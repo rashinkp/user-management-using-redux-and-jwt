@@ -26,7 +26,7 @@ const RegisterPage = () => {
   }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
-    e.preventDefault(); // Prevent form submission from reloading the page
+    e.preventDefault(); 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
     } else {

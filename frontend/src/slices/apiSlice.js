@@ -1,9 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const baseQuery = fetchBaseQuery({ baseUrl: "" });
-
 export const apiSlice = createApi({
-  baseQuery,
-  tagTypes: ["User"],
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3000",
+    credentials: "include",
+    prepareHeaders: (headers) => {
+      headers.set("Accept", "application/json");
+      return headers;
+    },
+  }),
+  tagTypes: ["User", "Admin"],
   endpoints: (builder) => ({}),
 });

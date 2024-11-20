@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
+import cors from 'cors'
 
 connectDB();
 
@@ -13,6 +14,13 @@ import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:4000",
+    credentials: true, 
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

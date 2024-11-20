@@ -1,9 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../../slices/adminApiSlices";
+import { useDispatch } from "react-redux";
+import { adminLogout } from "../../slices/authAdmin";
+import { toast } from "react-toastify";
+import AddUser from "./AddUser";
 
 const AdminNavbar = () => {
+  const [logoutApiCall] = useLogoutMutation();
+  const [isAddUser, setIsAddUser] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogoutClick = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(adminLogout());
+      toast.success("Logout Successful");
+      navigate("/admin/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleAddUserClick = () => {
+    setIsAddUser(true);
+  }
   return (
     <div>
+      {isAddUser && <AddUser toggle={setIsAddUser} />}
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/admin">
@@ -38,13 +62,24 @@ const AdminNavbar = () => {
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
-                <a
+                <button
+                  onClick={handleAddUserClick}
+                  href="#"
+                  className="block py-2 px-3 text-green-800 bg-green-800 rounded md:bg-transparent md:text-red -700 md:p-0 dark:text-white md:dark:text-green-600 mr-5"
+                  aria-current="page"
+                >
+                  + add user
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogoutClick}
                   href="#"
                   className="block py-2 px-3 text-red-600 bg-red-700 rounded md:bg-transparent md:text-red -700 md:p-0 dark:text-white md:dark:text-red-500 mr-10"
                   aria-current="page"
                 >
                   Logout
-                </a>
+                </button>
               </li>
             </ul>
           </div>
