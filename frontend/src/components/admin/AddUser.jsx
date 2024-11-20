@@ -5,13 +5,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../Spinner";
 import { useAddUserMutation } from "../../slices/adminApiSlices";
-const AddUser = ({ toggle }) => {
+const AddUser = ({ toggle, refetch }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const navigate = useNavigate();
 
   const [addUser, { isLoading }] = useAddUserMutation();
 
@@ -22,6 +20,7 @@ const AddUser = ({ toggle }) => {
     } else {
       try {
         await addUser({ name, email, password }).unwrap();
+        refetch();
         toast.success("User added successfully");
         toggle(false);
       } catch (err) {

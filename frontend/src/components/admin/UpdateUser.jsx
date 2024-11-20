@@ -3,7 +3,7 @@ import Spinner from "../Spinner";
 import { useAdminUpdateUserMutation } from "../../slices/adminApiSlices";
 import { toast } from "react-toastify";
 
-const UpdateUser = ({ toggle, userData }) => {
+const UpdateUser = ({ toggle, userData, refetch }) => {
   const [name, setName] = useState(userData?.name || "");
   const [email, setEmail] = useState(userData?.email || "");
   const [updateProfile, { isLoading }] = useAdminUpdateUserMutation();
@@ -19,11 +19,11 @@ const UpdateUser = ({ toggle, userData }) => {
       name,
       email,
     };
-    const id = userData._id
+    const id = userData._id;
 
     try {
-      const res = await updateProfile({id, data}).unwrap();
-      console.log(res);
+      const res = await updateProfile({ id, data }).unwrap();
+      refetch();
       toast.success("User data updated");
       toggle(false);
     } catch (err) {
