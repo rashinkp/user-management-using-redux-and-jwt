@@ -11,6 +11,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [profile, setProfile] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,18 +27,32 @@ const RegisterPage = () => {
   }, [navigate, userInfo]);
 
   const submitHandler = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
-    } else {
-      try {
-        const res = await register({ name, email, password }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        toast.success("Registration Successful");
-        navigate("/user");
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
+      return;
+    }
+
+    if (!profile) {
+      toast.error("Profile image is required");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("profile", profile);
+
+    try {
+      const res = await register(formData).unwrap();
+      dispatch(setCredentials({ ...res }));
+      toast.success("Registration Successful");
+      navigate("/user");
+    } catch (err) {
+      toast.error(
+        err?.data?.message || err.error || err.message || "An error occured"
+      );
     }
   };
 
@@ -48,7 +63,7 @@ const RegisterPage = () => {
       ) : (
         <form
           className="max-w-lg rounded-lg mx-auto bg-gray-900 p-10"
-          onSubmit={submitHandler} // Use onSubmit instead of onClick
+          onSubmit={submitHandler}
         >
           <div className="text-center">
             <h1 className="font-bold text-2xl m-5">Sign Up</h1>
@@ -86,6 +101,33 @@ const RegisterPage = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          {profile && (
+            <div className="mb-5">
+              <img
+                src={URL.createObjectURL(profile)}
+                alt="Profile Preview"
+                className="w-24 h-24 rounded-full object-cover"
+              />
+            </div>
+          )}
+
+          <div className="mb-5">
+            <label
+              htmlFor="profile"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Your Profile Image
+            </label>
+            <input
+              type="file"
+              id="profile"
+              onChange={(e) => setProfile(e.target.files[0])}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Enter your email"
               required

@@ -20,7 +20,7 @@ const authAdminSlice = createSlice({
   initialState,
   reducers: {
     adminLogin: (state, action) => {
-      state.adminInfo = action.payload; // Changed this line
+      state.adminInfo = action.payload; 
       try {
         localStorage.setItem("adminInfo", JSON.stringify(action.payload));
       } catch (error) {

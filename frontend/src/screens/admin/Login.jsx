@@ -30,16 +30,16 @@ const LoginPage = () => {
       toast.error(err?.data?.message || err.message);
     }
   };
-  const { adminInfo } = useSelector((state) => state.adminAuth); 
+  const { adminInfo } = useSelector((state) => state.adminAuth);
 
   useEffect(() => {
     if (adminInfo) {
-      navigate('/admin');
+      navigate("/admin");
     }
-  },[navigate,adminInfo])
+  }, [navigate, adminInfo]);
 
   return (
-    <div className="mt-36">
+    <div className="mt-20">
       <form className="max-w-lg rounded-lg mx-auto bg-gray-900 p-10">
         <div className="text-center">
           <h1 className="font-bold text-2xl m-5">Admin Login</h1>

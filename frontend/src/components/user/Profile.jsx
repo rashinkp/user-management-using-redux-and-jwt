@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import UpdateUser from "./UpdateUser.jsx";
 import { toast } from "react-toastify";
 
+const imageBaseURL = "http://localhost:3000/";
+
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [updateToggle, setUpdateToggle] = useState(false);
@@ -13,25 +15,32 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
   const navigate = useNavigate();
+
   const handleLogoutClick = async () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
-      toast.success("Logout Successfull");
+      toast.success("Logout Successful");
       navigate("/user");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
+
+  // Handle the profile image path
+  const filePath =
+    userInfo?.profile &&
+    `${imageBaseURL}${userInfo.profile.replace(/\\/g, "/")}`;
+
   return (
     <>
       {updateToggle && <UpdateUser toggle={setUpdateToggle} />}
-      <div className="w-full h-full  max-w-md bg-gradient-to-r from-gray-700 to-gray-700 border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 pt-20 pb-10">
+      <div className="w-full h-full max-w-md bg-gradient-to-r from-gray-700 to-gray-700 border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 pt-20 pb-10">
         <div className="flex flex-col items-center pb-6">
           <img
             className="w-20 h-20 mb-3 rounded-full shadow-lg border-4 border-blue-500"
-            src="/docs/images/people/profile-picture-3.jpg"
-            alt="Bonnie image"
+            src={filePath}
+            alt="Profile"
           />
           <h5 className="mb-1 text-lg font-medium text-gray-900 dark:text-white">
             {userInfo ? userInfo.name : "Guest"}

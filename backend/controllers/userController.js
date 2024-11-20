@@ -14,6 +14,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      profile: user.profile
     });
   } else {
     res.status(401);
@@ -25,7 +26,11 @@ const authUser = asyncHandler(async (req, res) => {
 //route -> POST /api/users/register
 //access -> Public
 const registerUser = asyncHandler(async (req, res) => {
+  
   const { name, email, password } = req.body;
+  const profile = req.file ? req.file.path : null;
+
+
   const userExist = await User.findOne({ email });
   if (userExist) {
     res.status(400);
@@ -36,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    profile,
   });
 
   if (user) {
@@ -44,6 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      profile: user.profile,
     });
   } else {
     res.status(400);
@@ -66,7 +73,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 //route -> GET /api/users/profile
 //access -> Privet
 const getUserProfile = asyncHandler(async (req, res) => {
-  
   const user = {
     _id: req.user._id,
     name: req.user.name,
@@ -80,7 +86,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //access -> Privet
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  if (user) { 
+  if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 

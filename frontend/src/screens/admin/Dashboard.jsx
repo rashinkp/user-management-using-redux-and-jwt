@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <AdminHeader />
+      
       <div className="px-20 pt-1">
         <DataTable />
       </div>
