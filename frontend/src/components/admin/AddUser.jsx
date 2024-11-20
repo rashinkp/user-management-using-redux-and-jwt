@@ -10,6 +10,7 @@ const AddUser = ({ toggle, refetch }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [profile, setProfile] = useState(null);
 
   const [addUser, { isLoading }] = useAddUserMutation();
 
@@ -17,16 +18,28 @@ const AddUser = ({ toggle, refetch }) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error("Password do not match");
-    } else {
+      return;
+    } 
+      if (!profile) {
+        toast.error('Profile image is required');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("profile", profile);
       try {
-        await addUser({ name, email, password }).unwrap();
+        
+        const res = await addUser(formData).unwrap();
         refetch();
         toast.success("User added successfully");
         toggle(false);
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
-    }
+
   };
 
   return (
@@ -89,7 +102,7 @@ const AddUser = ({ toggle, refetch }) => {
                         id="name"
                         onChange={(e) => setName(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder='Enter user name'
+                        placeholder="Enter user name"
                         required=""
                       />
                     </div>
@@ -106,7 +119,24 @@ const AddUser = ({ toggle, refetch }) => {
                         id="email"
                         onChange={(e) => setEmail(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder='Enter user email'
+                        placeholder="Enter user email"
+                        required=""
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="profile"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        User Profile Image
+                      </label>
+                      <input
+                        type="file"
+                        name="profile"
+                        id="profile"
+                        onChange={(e) => setProfile(e.target.files[0])}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        placeholder="Enter user name"
                         required=""
                       />
                     </div>

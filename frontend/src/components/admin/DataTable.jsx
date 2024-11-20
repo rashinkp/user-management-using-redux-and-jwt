@@ -7,7 +7,7 @@ import Spinner from "../Spinner";
 import { toast } from "react-toastify";
 import UpdateUser from "./UpdateUser";
 import AddUser from "./AddUser";
-
+const imageBaseURL = "http://localhost:3000/";
 const DataTable = () => {
   const { data: users, error, isLoading, refetch } = useFetchUsersQuery();
   const [deleteUser, { isLoading: isDeleting }] = useDeletUserMutation();
@@ -75,6 +75,9 @@ const DataTable = () => {
                     Count
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Profile
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     User Name
                   </th>
                   <th scope="col" className="px-6 py-3">
@@ -95,6 +98,17 @@ const DataTable = () => {
                     className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
                     <td className="px-6 py-4">{count + 1}</td>
+
+                    <td className="px-6 py-4">
+                      <img
+                        className="w-5 h-5 object-cover"
+                        src={`${imageBaseURL}${user.profile.replace(
+                          /\\/g,
+                          "/"
+                        )}`}
+                        alt=""
+                      />
+                    </td>
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"

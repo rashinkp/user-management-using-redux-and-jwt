@@ -47,6 +47,8 @@ const logoutAdmin = async (req, res) => {
 
 const addUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+  const profile = req.file ? req.file.path : null;
+
   const userExist = await User.findOne({ email });
   if (userExist) {
     throw new Error("User already exists");
@@ -56,6 +58,7 @@ const addUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    profile,
   });
 
   if (user) {
