@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   useDeletUserMutation,
   useFetchUsersQuery,
 } from "../../slices/adminApiSlices";
 import Spinner from "../Spinner";
 import { toast } from "react-toastify";
+import UpdateUser from "./UpdateUser";
 
 const DataTable = () => {
-  const { data: users, error, isLoading } = useFetchUsersQuery();
+  const { data: users, error, isLoading, refetch } = useFetchUsersQuery();
   const [deleteUser, { isLoading: isDeleting }] = useDeletUserMutation();
+  const [isEditUser, setIsEditUser] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleDeleteClick = async (id) => {
-    if (window.confirm("are you sure you want to delete the user?")) {
+    if (window.confirm("Are you sure you want to delete the user?")) {
       try {
         await deleteUser(id).unwrap();
         toast.success("User deleted");
+        refetch();
       } catch (err) {
         console.error("Error deleting user:", error);
         toast.error("Failed to delete user.");
@@ -22,8 +26,23 @@ const DataTable = () => {
     }
   };
 
+  const handleEditClick = async (user) => {
+    setSelectedUser(user);
+    setIsEditUser(true);
+    refetch();
+  };
+
+  useEffect(() => {
+    if (isDeleting) {
+      refetch();
+    }
+  }, [isDeleting, refetch]);
+
   return (
     <div>
+      {isEditUser && (
+        <UpdateUser toggle={setIsEditUser} userData={selectedUser} />
+      )}
       {isLoading ? (
         <Spinner />
       ) : (
@@ -64,12 +83,14 @@ const DataTable = () => {
                     </th>
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </a>
+                      <button onClick={() => handleEditClick(user)}>
+                        <a
+                          href="#"
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Edit
+                        </a>
+                      </button>
                     </td>
                     <td className="px-6 py-4">
                       <button onClick={() => handleDeleteClick(user._id)}>

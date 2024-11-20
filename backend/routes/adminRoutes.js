@@ -5,6 +5,7 @@ import {
   logoutAdmin,
   addUser,
   deletUser,
+  updateUser,
 } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/protectAdmin.js";
 const router = express.Router();
@@ -14,5 +15,6 @@ router.post("/login", authAdmin);
 router.post("/logout", logoutAdmin);
 router.post("/addUser", protectAdmin, addUser);
 router.delete("/deleteUser/:id", protectAdmin, deletUser);
+router.put("/updateUser/:id", protectAdmin, updateUser);
 
 export default router;

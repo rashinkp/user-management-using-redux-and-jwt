@@ -10,7 +10,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/login`,
         method: "POST",
         body: data,
-        credentials: "include", // add this
+        credentials: "include",
       }),
       transformErrorResponse: (response) => response.data,
     }),
@@ -30,14 +30,23 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: userData,
       }),
-      invalidatesTags: ["Users"],
     }),
     deletUser: builder.mutation({
       query: (id) => ({
         url: `${ADMIN_URL}/deleteUser/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Users"],
+    }),
+    adminUpdateUser: builder.mutation({
+      query: ({id, data}) => {
+        console.log("Data being sent to backend:", data);
+        console.log("Id being sent to backend:", id);
+        return {
+          url: `${ADMIN_URL}/updateUser/${id}`,
+          method: "PUT",
+          body: data,
+        };
+      },
     }),
   }),
 });
@@ -48,4 +57,5 @@ export const {
   useLogoutMutation,
   useAddUserMutation,
   useDeletUserMutation,
+  useAdminUpdateUserMutation,
 } = adminApiSlice;

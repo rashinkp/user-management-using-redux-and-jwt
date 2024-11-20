@@ -66,6 +66,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 //route -> GET /api/users/profile
 //access -> Privet
 const getUserProfile = asyncHandler(async (req, res) => {
+  
   const user = {
     _id: req.user._id,
     name: req.user.name,
@@ -79,7 +80,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //access -> Privet
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  if (user) {
+  if (user) { 
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 

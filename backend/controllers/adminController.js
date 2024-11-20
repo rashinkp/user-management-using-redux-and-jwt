@@ -81,4 +81,30 @@ const deletUser = async (req, res) => {
   }
 };
 
-export { getUsers, authAdmin, logoutAdmin, addUser , deletUser };
+const updateUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { name, email } = req.body;
+  if (!id) throw new Error("User ID is required");
+
+  try {
+    const user = await User.findById(id);
+    if (user) {
+      user.name = name || user.name;
+      user.email = email || user.email;
+      const updateUser = await user.save();
+      res.status(200).json({
+        _id: updateUser._id,
+        name: updateUser.name,
+        email: updateUser.email,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  } catch (err) {
+    res.status(404);
+    throw new Error("Error found while updating user");
+  }
+});
+
+export { getUsers, authAdmin, logoutAdmin, addUser, deletUser, updateUser };
