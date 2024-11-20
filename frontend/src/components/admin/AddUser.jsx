@@ -89,7 +89,7 @@ const AddUser = ({ toggle, refetch }) => {
                         id="name"
                         onChange={(e) => setName(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder={name}
+                        placeholder='Enter user name'
                         required=""
                       />
                     </div>
@@ -106,7 +106,7 @@ const AddUser = ({ toggle, refetch }) => {
                         id="email"
                         onChange={(e) => setEmail(e.target.value)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder={email}
+                        placeholder='Enter user email'
                         required=""
                       />
                     </div>

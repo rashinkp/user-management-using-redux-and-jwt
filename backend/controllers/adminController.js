@@ -15,16 +15,17 @@ const getUsers = async (req, res) => {
   }
 };
 
-const authAdmin = async (req, res) => {
+const authAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  try {
     const admin = await Admin.findOne({ email });
     if (!admin) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      res.status(401);
+      throw new Error('Invalid Email')
     }
 
     if (admin.password !== password) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      res.status(401);
+      throw new Error('Invalid password')
     }
     generateToken(res, admin._id);
     res.status(201).json({
@@ -32,10 +33,8 @@ const authAdmin = async (req, res) => {
       name: admin.name,
       email: admin.email,
     });
-  } catch (error) {
-    res.status(500).json({ message: "Server error during authentication" });
-  }
-};
+  
+});
 
 const logoutAdmin = async (req, res) => {
   console.log("hello logout controller has been called..........1");
