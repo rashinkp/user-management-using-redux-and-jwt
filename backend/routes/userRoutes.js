@@ -6,8 +6,8 @@ import {
   registerUser,
   updateUserProfile,
 } from "../controllers/userController.js";
-import { protect } from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
+import { protect } from "../middleware/protectRole.js";
 
 const router = express.Router();
 
@@ -17,6 +17,6 @@ router.post("/logout", logoutUser);
 router
   .route("/profile")
   .get(protect, getUserProfile)
-  .put(protect,upload.single('profile') ,updateUserProfile);
+  .put(protect, upload.single("profile"), updateUserProfile);
 
 export default router;

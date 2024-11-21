@@ -51,9 +51,9 @@ export default function UserHead() {
             </DisclosureButton>
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="flex shrink-0 items-center">
-              <Link to="/user" className="text-white text-xl font-bold ">
-                User
+            <div className="flex shrink-0 items-center me-10">
+              <Link to="/" className="text-white text-xl font-bold ">
+                Home
               </Link>
             </div>
           </div>

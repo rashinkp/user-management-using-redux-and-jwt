@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import Admin from "../models/adminModel.js";
 import generateToken from "../utils/generateToken.js";
 import asyncHandler from "express-async-handler";
+
 const getUsers = async (req, res) => {
   try {
     const users = await User.find({});
@@ -27,7 +28,7 @@ const authAdmin = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid password");
   }
-  generateToken(res, admin._id);
+  generateToken(res, admin._id, "admin");
   res.status(201).json({
     _id: admin._id,
     name: admin.name,
@@ -37,7 +38,7 @@ const authAdmin = asyncHandler(async (req, res) => {
 
 const logoutAdmin = async (req, res) => {
   console.log("hello logout controller has been called..........1");
-  res.cookie("jwt", "", {
+  res.cookie("admin", "", {
     httpOnly: true,
     expires: new Date(0),
   });
@@ -102,7 +103,6 @@ const updateUser = asyncHandler(async (req, res) => {
       user.name = name || user.name;
       user.email = email || user.email;
 
-      
       if (password) {
         user.password = password;
       }

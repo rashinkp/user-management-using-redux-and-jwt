@@ -4,11 +4,10 @@ import { useLogoutMutation } from "../../slices/adminApiSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { adminLogout } from "../../slices/authAdmin";
 import { toast } from "react-toastify";
-import AddUser from "./AddUser";
 
 const AdminNavbar = () => {
   const [logoutApiCall] = useLogoutMutation();
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogoutClick = async () => {
@@ -22,20 +21,17 @@ const AdminNavbar = () => {
     }
   };
 
-  const { adminInfo } = useSelector((state) => state.adminAuth)
+  const { adminInfo } = useSelector((state) => state.adminAuth);
 
- 
-
-  
   return (
     <div>
       <nav className="bg-white border-gray-200 dark:bg-gray-900">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <Link to="/admin">
+          <Link to="/">
             <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white ms-10">
-              Admin
+              Home
             </span>
-          </Link>
+          </Link> 
           <button
             data-collapse-toggle="navbar-default"
             type="button"

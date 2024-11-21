@@ -7,15 +7,15 @@ import {
   deletUser,
   updateUser,
 } from "../controllers/adminController.js";
-import { protectAdmin } from "../middleware/protectAdmin.js";
 import upload from "../middleware/uploadMiddleware.js";
+import { protect } from "../middleware/protectRole.js";
 const router = express.Router();
 
-router.get("/", protectAdmin, getUsers);
+router.get("/",protect, getUsers);
 router.post("/login", authAdmin);
 router.post("/logout", logoutAdmin);
-router.post("/addUser",upload.single('profile'), protectAdmin, addUser);
-router.delete("/deleteUser/:id", protectAdmin, deletUser);
-router.put("/updateUser/:id", protectAdmin,upload.single('profile'), updateUser);
+router.post("/addUser", upload.single("profile"), protect, addUser);
+router.delete("/deleteUser/:id", protect, deletUser);
+router.put("/updateUser/:id", protect, upload.single("profile"), updateUser);
 
 export default router;
