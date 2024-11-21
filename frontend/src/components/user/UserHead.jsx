@@ -10,7 +10,7 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../../slices/UsersApiSlice.js";
+import { useLogoutMutation } from "../../slices/usersApiSlice.js";
 import { logout } from "../../slices/authSlice.js";
 import { toast } from "react-toastify";
 
@@ -26,7 +26,7 @@ export default function UserHead() {
       await logoutApiCall().unwrap();
       dispatch(logout());
       toast.success("Logout Successfull");
-      navigate("/");
+      navigate("/user");
     } catch (err) {
       console.log(err);
     }

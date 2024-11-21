@@ -17,23 +17,22 @@ const getUsers = async (req, res) => {
 
 const authAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-    const admin = await Admin.findOne({ email });
-    if (!admin) {
-      res.status(401);
-      throw new Error('Invalid Email')
-    }
+  const admin = await Admin.findOne({ email });
+  if (!admin) {
+    res.status(401);
+    throw new Error("Invalid Email");
+  }
 
-    if (admin.password !== password) {
-      res.status(401);
-      throw new Error('Invalid password')
-    }
-    generateToken(res, admin._id);
-    res.status(201).json({
-      _id: admin._id,
-      name: admin.name,
-      email: admin.email,
-    });
-  
+  if (admin.password !== password) {
+    res.status(401);
+    throw new Error("Invalid password");
+  }
+  generateToken(res, admin._id);
+  res.status(201).json({
+    _id: admin._id,
+    name: admin.name,
+    email: admin.email,
+  });
 });
 
 const logoutAdmin = async (req, res) => {
@@ -53,7 +52,6 @@ const addUser = asyncHandler(async (req, res) => {
   if (userExist) {
     throw new Error("User already exists");
   }
-
 
   // if (req.file) {
   //   const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
@@ -101,18 +99,25 @@ const updateUser = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(id);
     if (user) {
-
       user.name = name || user.name;
       user.email = email || user.email;
-      user.password = password || user.password;
+
+      
+      if (password) {
+        user.password = password;
+      }
+
+      if (req.file) {
+        user.profile = req.file.path;
+      }
 
       const updateUser = await user.save();
       res.status(200).json({
         _id: updateUser._id,
         name: updateUser.name,
         email: updateUser.email,
+        profile: updateUser.profile,
       });
-
     } else {
       res.status(404);
       throw new Error("User not found");

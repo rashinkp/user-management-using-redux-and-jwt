@@ -38,13 +38,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     adminUpdateUser: builder.mutation({
-      query: ({id, data}) => {
-        console.log("Data being sent to backend:", data);
+      query: ({ id, formData }) => {
+        console.log("Data being sent to backend:", formData);
         console.log("Id being sent to backend:", id);
         return {
           url: `${ADMIN_URL}/updateUser/${id}`,
           method: "PUT",
-          body: data,
+          body: formData,
         };
       },
     }),

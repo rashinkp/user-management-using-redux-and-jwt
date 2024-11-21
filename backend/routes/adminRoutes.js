@@ -16,6 +16,6 @@ router.post("/login", authAdmin);
 router.post("/logout", logoutAdmin);
 router.post("/addUser",upload.single('profile'), protectAdmin, addUser);
 router.delete("/deleteUser/:id", protectAdmin, deletUser);
-router.put("/updateUser/:id", protectAdmin, updateUser);
+router.put("/updateUser/:id", protectAdmin,upload.single('profile'), updateUser);
 
 export default router;

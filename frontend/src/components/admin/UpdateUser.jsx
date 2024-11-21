@@ -20,21 +20,11 @@ const UpdateUser = ({ toggle, userData, refetch }) => {
     if (profile) {
       formData.append("profile", profile);
     }
-    if (!userData?._id) {
-      toast.error("User ID is missing.");
-      return;
-    }
-    const data = {
-      id: userData._id,
-      name,
-      email,
-      password
-    };
 
     const id = userData._id;
 
     try {
-      const res = await updateProfile({ id, data }).unwrap();
+      const res = await updateProfile({ id, formData }).unwrap();
       refetch();
       toast.success("User data updated");
       toggle(false);
