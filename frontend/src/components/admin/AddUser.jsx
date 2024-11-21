@@ -19,27 +19,36 @@ const AddUser = ({ toggle, refetch }) => {
     if (password !== confirmPassword) {
       toast.error("Password do not match");
       return;
-    } 
-      if (!profile) {
-        toast.error('Profile image is required');
-        return;
     }
-    
+    if (!profile) {
+      toast.error("Profile image is required");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
     formData.append("profile", profile);
-      try {
-        
-        const res = await addUser(formData).unwrap();
-        refetch();
-        toast.success("User added successfully");
-        toggle(false);
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
+    try {
+      const res = await addUser(formData).unwrap();
+      refetch();
+      toast.success("User added successfully");
+      toggle(false);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (file && !allowedTypes.includes(file.type)) {
+      toast.error("Invalid image format");
+      e.target.value = null;
+    } else {
+      setProfile(file);
+    }
   };
 
   return (
@@ -134,10 +143,9 @@ const AddUser = ({ toggle, refetch }) => {
                         type="file"
                         name="profile"
                         id="profile"
-                        onChange={(e) => setProfile(e.target.files[0])}
+                        onChange={(e) => handleFileChange(e)}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Enter user name"
-                        required=""
+                        placeholder="User profile"
                       />
                     </div>
                     <div>
@@ -181,7 +189,7 @@ const AddUser = ({ toggle, refetch }) => {
                       onClick={(e) => submitHandler(e)}
                       className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
-                      Update
+                      Add User
                     </button>
                   </form>
                 </div>

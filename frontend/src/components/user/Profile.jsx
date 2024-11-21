@@ -38,7 +38,7 @@ const Profile = () => {
       <div className="w-full h-full max-w-md bg-gradient-to-r from-gray-700 to-gray-700 border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 pt-20 pb-10">
         <div className="flex flex-col items-center pb-6">
           <img
-            className="w-20 h-20 mb-3 rounded-full shadow-lg border-4 border-blue-500"
+            className="w-20 h-20 mb-3 rounded-full object-cover shadow-lg border-4 border-blue-500"
             src={filePath}
             alt="Profile"
           />
@@ -50,7 +50,6 @@ const Profile = () => {
           </span>
           <div className="flex mt-20 space-x-3">
             <a
-              href="#"
               onClick={() => setUpdateToggle(true)}
               className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
             >

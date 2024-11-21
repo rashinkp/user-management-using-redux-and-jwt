@@ -66,7 +66,6 @@ const AdminNavbar = () => {
                 <li>
                   <button
                     onClick={handleLogoutClick}
-                    href="#"
                     className="block py-2 px-3 text-red-600 bg-red-700 rounded md:bg-transparent md:text-red -700 md:p-0 dark:text-white md:dark:text-red-500 mr-10"
                     aria-current="page"
                   >

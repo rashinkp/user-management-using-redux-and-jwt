@@ -8,12 +8,16 @@ import { toast } from "react-toastify";
 import UpdateUser from "./UpdateUser";
 import AddUser from "./AddUser";
 const imageBaseURL = "http://localhost:3000/";
+
 const DataTable = () => {
   const { data: users, error, isLoading, refetch } = useFetchUsersQuery();
   const [deleteUser, { isLoading: isDeleting }] = useDeletUserMutation();
   const [isEditUser, setIsEditUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAddUser, setIsAddUser] = useState(false);
+
+  // Search state
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleDeleteClick = async (id) => {
     if (window.confirm("Are you sure you want to delete the user?")) {
@@ -44,17 +48,38 @@ const DataTable = () => {
     setIsAddUser(true);
   };
 
+  // Determine which users to display based on search term
+  const displayedUsers =
+    searchTerm.trim() === ""
+      ? users
+      : users?.filter(
+          (user) =>
+            user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
   return (
     <div className="flex flex-col">
       {isAddUser && <AddUser toggle={setIsAddUser} refetch={refetch} />}
-      <div className="flex justify-end m-5">
-        <button
-          onClick={handleAddUserClick}
-          href="#"
-          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          + add user
-        </button>
+      <div className="flex items-center justify-center m-6">
+        <div className="flex w-full max-w-xl items-center space-x-4">
+          <div className="relative flex-grow">
+            <input
+              type="search"
+              id="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search by name or email"
+            />
+          </div>
+          <button
+            onClick={handleAddUserClick}
+            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-2 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          >
+            + Add User
+          </button>
+        </div>
       </div>
       {isEditUser && (
         <UpdateUser
@@ -67,8 +92,8 @@ const DataTable = () => {
         <Spinner />
       ) : (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          {users && users.length > 0 ? (
-            <table className="w-full  text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          {displayedUsers && displayedUsers.length > 0 ? (
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -92,7 +117,7 @@ const DataTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, count) => (
+                {displayedUsers.map((user, count) => (
                   <tr
                     key={user._id}
                     className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
@@ -119,7 +144,6 @@ const DataTable = () => {
                     <td className="px-6 py-4">
                       <button onClick={() => handleEditClick(user)}>
                         <a
-                          href="#"
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
                           Edit
@@ -129,7 +153,6 @@ const DataTable = () => {
                     <td className="px-6 py-4">
                       <button onClick={() => handleDeleteClick(user._id)}>
                         <a
-                          href="#"
                           className="font-medium text-red-600 dark:text-red-500 hover:underline"
                         >
                           Delete

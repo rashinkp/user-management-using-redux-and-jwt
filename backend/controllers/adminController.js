@@ -54,6 +54,16 @@ const addUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists");
   }
 
+
+  // if (req.file) {
+  //   const allowedMimeTypes = ["image/jpeg", "image/png", "image/jpg"];
+  //   if (!allowedMimeTypes.includes(req.file.mimetype)) {
+  //     const fs = require("fs");
+  //     fs.unlinkSync(req.file.path);
+  //     throw new Error("Only JPG and PNG file formats are allowed");
+  //   }
+  // }
+
   const user = await User.create({
     name,
     email,
@@ -85,20 +95,24 @@ const deletUser = async (req, res) => {
 
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { name, email } = req.body;
+  const { name, email, password } = req.body;
   if (!id) throw new Error("User ID is required");
 
   try {
     const user = await User.findById(id);
     if (user) {
+
       user.name = name || user.name;
       user.email = email || user.email;
+      user.password = password || user.password;
+
       const updateUser = await user.save();
       res.status(200).json({
         _id: updateUser._id,
         name: updateUser.name,
         email: updateUser.email,
       });
+
     } else {
       res.status(404);
       throw new Error("User not found");

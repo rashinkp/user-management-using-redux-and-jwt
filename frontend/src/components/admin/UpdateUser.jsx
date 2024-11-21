@@ -6,10 +6,20 @@ import { toast } from "react-toastify";
 const UpdateUser = ({ toggle, userData, refetch }) => {
   const [name, setName] = useState(userData?.name || "");
   const [email, setEmail] = useState(userData?.email || "");
+  const [password, setPassword] = useState(userData?.password || '')
+  const [profile , setProfile] = useState(null)
+  
   const [updateProfile, { isLoading }] = useAdminUpdateUserMutation();
 
   const updateSubmitHandler = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append("email", email);
+    formData.append("password", password);
+    if (profile) {
+      formData.append("profile", profile);
+    }
     if (!userData?._id) {
       toast.error("User ID is missing.");
       return;
@@ -18,7 +28,9 @@ const UpdateUser = ({ toggle, userData, refetch }) => {
       id: userData._id,
       name,
       email,
+      password
     };
+
     const id = userData._id;
 
     try {
@@ -29,6 +41,17 @@ const UpdateUser = ({ toggle, userData, refetch }) => {
     } catch (err) {
       toast.error(err?.data?.message || err.error);
       console.log(err);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (file && !allowedTypes.includes(file.type)) {
+      toast.error("Invalid image format");
+      e.target.value = null;
+    } else {
+      setProfile(file);
     }
   };
 
@@ -111,6 +134,41 @@ const UpdateUser = ({ toggle, userData, refetch }) => {
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder={email}
                         required=""
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="profile"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        New Profile Image
+                      </label>
+                      <input
+                        type="file"
+                        name="profile"
+                        id="profile"
+                        onChange={(e) => handleFileChange(e)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        placeholder="User profile"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Your Password
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        placeholder="**********"
+                        required
                       />
                     </div>
 

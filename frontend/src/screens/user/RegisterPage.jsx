@@ -56,6 +56,18 @@ const RegisterPage = () => {
     }
   };
 
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (file && !allowedTypes.includes(file.type)) {
+      toast.error("Invalid image format");
+      e.target.value = null;
+    } else {
+      setProfile(file);
+    }
+  };
+
   return (
     <div className="mt-10">
       {isLoading ? (
@@ -127,7 +139,7 @@ const RegisterPage = () => {
             <input
               type="file"
               id="profile"
-              onChange={(e) => setProfile(e.target.files[0])}
+              onChange={(e) => handleFileChange(e)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Enter your email"
               required

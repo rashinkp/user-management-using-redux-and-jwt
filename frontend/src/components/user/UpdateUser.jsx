@@ -10,6 +10,7 @@ const UpdateUser = ({ toggle }) => {
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
   const [name, setName] = useState(userInfo.name);
   const [email, setEmail] = useState(userInfo.email);
+  const [profile , setProfile] = useState(null)
 
   const [password, setPassword] = useState("");
 
@@ -17,13 +18,16 @@ const UpdateUser = ({ toggle }) => {
 
   const submitUpdateHandler = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    
+    if (profile) {
+      formData.append('profile',profile)
+    }
     try {
-      const res = await updateProfile({
-        _id: userInfo._id,
-        name,
-        email,
-        password,
-      }).unwrap();
+      const res = await updateProfile(formData).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success("Profile Updated");
       toggle(false);
@@ -31,6 +35,17 @@ const UpdateUser = ({ toggle }) => {
       toast.error(err?.data?.message || err.error);
     }
   };
+
+   const handleFileChange = (e) => {
+     const file = e.target.files[0];
+     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+     if (file && !allowedTypes.includes(file.type)) {
+       toast.error("Invalid image format");
+       e.target.value = null;
+     } else {
+       setProfile(file);
+     }
+   };
 
   return (
     <div>
@@ -111,6 +126,22 @@ const UpdateUser = ({ toggle }) => {
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder={email}
                         required=""
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="profile"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        New Profile Image
+                      </label>
+                      <input
+                        type="file"
+                        name="profile"
+                        id="profile"
+                        onChange={(e) => handleFileChange(e)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        placeholder="User profile"
                       />
                     </div>
                     <div>
