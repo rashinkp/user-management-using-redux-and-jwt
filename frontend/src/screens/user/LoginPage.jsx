@@ -32,6 +32,8 @@ const LoginPage = () => {
       toast.error(err?.data?.message || err.message || err.error);
     }
   };
+
+  
   return (
     <div className="mt-10">
       {isLoading ? (

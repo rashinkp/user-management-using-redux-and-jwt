@@ -7,6 +7,7 @@ import Spinner from "../Spinner";
 import { toast } from "react-toastify";
 import UpdateUser from "./UpdateUser";
 import AddUser from "./AddUser";
+import { useNavigate } from "react-router-dom";
 const imageBaseURL = "http://localhost:3000/";
 
 const DataTable = () => {
@@ -18,6 +19,8 @@ const DataTable = () => {
 
   // Search state
   const [searchTerm, setSearchTerm] = useState("");
+
+  const navigate = useNavigate();
 
   const handleDeleteClick = async (id) => {
     if (window.confirm("Are you sure you want to delete the user?")) {
@@ -56,7 +59,9 @@ const DataTable = () => {
           (user) =>
             user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             user.email.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+      );
+  
+  
 
   return (
     <div className="flex flex-col">
